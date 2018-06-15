@@ -17,10 +17,17 @@ class Task(models.Model):
     pub_date = models.DateField('date created')
     due_date = models.DateField('date due')
     description = models.TextField(max_length=1000)
-    completed = models.BooleanField()
-
-    def due_soon(self):
-        return self.due_date >= timezone.now() - datetime.timedelta(days=2)
+    completed = models.BooleanField(default=False)
+    recurring = models.BooleanField(default=False)
+    persistent = models.BooleanField(default=False)
 
     def __str__(self):
         return self.task_name
+
+
+class Dependancy(models.Model):
+    parent_id = models.ForeignKey(Task, related_name='parent_task', on_delete=models.CASCADE)
+    child_id = models.ForeignKey(Task, related_name='child_task', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return "Parent: " + self.parent_id.task_name + " Child: " + self.child_id.task_name

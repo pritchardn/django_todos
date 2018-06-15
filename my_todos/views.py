@@ -1,10 +1,13 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from .models import *
 # Create your views here.
 
 
 def index(request):
-    return HttpResponse("Henlo world, welcome to my todolist")
+    latest_task_list = Task.objects.order_by('-due_date')[:5]
+    output = {'latest_task_list' : latest_task_list}
+    return render(request, 'my_todos/index.html', output)
 
 
 def detail(request, task_id):
