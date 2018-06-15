@@ -15,7 +15,7 @@ class Task(models.Model):
     list_id = models.ForeignKey(List, on_delete=models.CASCADE)
     task_name = models.CharField(max_length=200)
     pub_date = models.DateField('date created')
-    due_date = models.DateField('date due')
+    due_date = models.DateField('date due', blank=True, null=True)
     description = models.TextField(max_length=1000)
     completed = models.BooleanField(default=False)
     recurring = models.BooleanField(default=False)

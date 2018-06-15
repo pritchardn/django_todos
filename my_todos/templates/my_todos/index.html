@@ -1,7 +1,10 @@
-{% if latest_task_list %}
+{% if full_list %}
     <ul>
-    {% for task in latest_task_list %}
-        <li><a href="/todos/{{ task.id }}/">{{ task.task_name }}</a></li>
+    {% for key, value_list in full_list.items %}
+        <h2>{{ key }}</h2>
+        {% for task in value_list %}
+            <li><a href="/todos/{{ task.id }}/">{{ task.task_name }}</a></li>
+        {% endfor %}
     {% endfor %}
     </ul>
 {% else %}
