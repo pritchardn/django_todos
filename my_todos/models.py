@@ -1,6 +1,8 @@
 import datetime
 from django.db import models
 from django.utils import timezone
+from django.urls import reverse
+from django.conf import settings
 # Create your models here.
 
 
@@ -20,9 +22,19 @@ class Task(models.Model):
     completed = models.BooleanField(default=False)
     recurring = models.BooleanField(default=False)
     persistent = models.BooleanField(default=False)
+    notes = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return self.task_name
+
+    def get_url(self):
+        return reverse('todos:task_name', kwargs={'task_id': self.id})
+
+    def overdue(self):
+        if self.due_date and datetime.date.today() > self.due_date:
+            return True
+        else:
+            return False
 
 
 class Dependancy(models.Model):

@@ -1,13 +1,13 @@
 {% if full_list %}
+    <h1>Home</h1>
     <ul>
     {% for key, value_list in full_list.items %}
-        <h2><a href="/todos/list/{{ key }}">{{ key }}</a></h2>
+        <h2>{{ key }}</h2>
         {% for task in value_list %}
-            <li><a href="/todos/task/{{ task.id }}/">{{ task.task_name }}</a></li>
+            <li><a href="/todos/{{ task.id }}/">{{ task.task_name }}</a></li>
         {% endfor %}
     {% endfor %}
     </ul>
 {% else %}
     <p>No tasks are available.</p>
 {% endif %}
-
