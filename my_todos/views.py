@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from .models import *
 from django.views import generic
+from django.urls import reverse_lazy
 
 
 def index(request):
@@ -18,9 +19,8 @@ def index(request):
     return render(request, 'my_todos/index.html', output)
 
 
-def task_detail(request, task_id):
-    task = get_object_or_404(Task, pk=task_id)
-    return render(request, 'my_todos/task.html', {'task': task})
+class TaskDetail(generic.DetailView):
+    model = Task
 
 
 class ListDetail(generic.DetailView):
@@ -29,3 +29,36 @@ class ListDetail(generic.DetailView):
 
 class ListLists(generic.ListView):
     model = List
+
+# Forms --------------------------------------
+
+
+class ListCreate(generic.CreateView):
+    model = List
+    fields = ['list_name']
+
+
+class ListUpdate(generic.UpdateView):
+    model = List
+    fields = ['list_name']
+
+
+class ListDelete(generic.DeleteView):
+    model = List
+    success_url = reverse_lazy('todos:index')
+
+
+class TaskCreate(generic.CreateView):
+    model = Task
+    fields = ['task_name', 'pub_date', 'due_date', 'description', 'list_id', 'recurring', 'persistent']
+
+
+class TaskUpdate(generic.UpdateView):
+    model = Task
+    fields = ['task_name', 'pub_date', 'due_date', 'description', 'recurring', 'persistent']
+
+
+class TaskDelete(generic.DeleteView):
+    model = Task
+    success_url = reverse_lazy('todos:index')
+

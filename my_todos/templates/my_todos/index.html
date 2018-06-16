@@ -1,7 +1,7 @@
 {% if full_list %}
     <ul>
     {% for key, value_list in full_list.items %}
-        <h2><a href="/todos/list/{{ key }}">{{ key }}</a></h2>
+        <h2><a href="/todos/list/{{ key.id }}">{{ key }}</a></h2>
         {% for task in value_list %}
             <li><a href="/todos/task/{{ task.id }}/">{{ task.task_name }}</a></li>
         {% endfor %}
