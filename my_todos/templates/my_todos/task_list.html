@@ -8,3 +8,10 @@
 <form action="/todos">
     <button type="submit">Go Home</button>
 </form>
+{% block content %}
+    <ul>
+        {% for task in object_list %}
+            <li>{{ task.task_name }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

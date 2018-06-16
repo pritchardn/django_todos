@@ -13,7 +13,7 @@ class List(models.Model):
         return self.list_name
 
     def get_absolute_url(self):
-        return reverse('todos:list_detail', kwargs={'pk': self.pk})
+        return reverse('todos:list_summary', kwargs={'pk': self.pk})
 
 
 class Task(models.Model):

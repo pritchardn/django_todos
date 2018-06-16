@@ -23,9 +23,18 @@ class TaskDetail(generic.DetailView):
     model = Task
 
 
-class ListDetail(generic.DetailView):
+class ListSummary(generic.ListView):
     model = List
 
+    def get_queryset(self):
+        return Task.objects.filter(list_id=self.kwargs['pk'])
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        # Add in the publisher
+        context['list'] = List.objects.get(pk=self.kwargs['pk'])
+        return context
 
 class ListLists(generic.ListView):
     model = List

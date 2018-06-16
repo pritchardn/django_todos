@@ -1,1 +1,24 @@
-{{ task }}
+<h1>{{ task }}</h1>
+<form action="update/">
+    <button type="submit">Edit</button>
+</form>
+<form action="delete/">
+    <button type="submit">Delete</button>
+</form>
+<form action="/todos">
+    <button type="submit">Go Home</button>
+</form>
+<h5>Description</h5>
+<p>{{ task.description }}</p>
+<h5>Date Created</h5>
+<p>{{ task.pub_date }}</p>
+<h5>Date Due</h5>
+<p>{{ task.due_date }}</p>
+<h5>List</h5>
+<p>{{ task.list_id }}</p>
+<h5>Completed?</h5>
+<p>{{ task.completed }}</p>
+<h5>Recurring?</h5>
+<p>{{ task.recurring }}</p>
+<h5>Persistent?</h5>
+<p>{{ task.persistent }}</p>
