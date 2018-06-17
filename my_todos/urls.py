@@ -7,7 +7,10 @@ app_name = 'todos'
 
 urlpatterns = [
     # Overviews
-    path('', views.index, name='index'),
+    path('home/', views.home, name='home'),
+    path('home/completed', views.home_completed, name='home_completed'),
+    path('home/all', views.home_all, name='home_all'),
+    path('home/overdue', views.home_overdue, name='home_overdue'),
     # Lists
     path('list/<int:pk>/', ListSummary.as_view(), name='list_summary'),
     path('list/new/', ListCreate.as_view(), name='list_new'),

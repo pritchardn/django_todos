@@ -3,9 +3,40 @@ from django.http import HttpResponse
 from .models import *
 from django.views import generic
 from django.urls import reverse_lazy
+from django.db.models import Q
 
 
-def index(request):
+def home(request):
+    current_list_list = List.objects.order_by('id', 'list_name')
+    full_list = {}
+    for list in current_list_list:
+        full_list[list] = []
+        current_task_list = Task.objects.filter(list_id=list.id).\
+            filter(completed=False).\
+            filter(Q(due_date__gte=datetime.date.today()) | Q(due_date=None)).\
+            order_by('-list_id').\
+            order_by('-due_date')
+        for task in current_task_list:
+            full_list[list].append(task)
+    output = {'full_list': full_list}
+    return render(request, 'my_todos/home.html', output)
+
+
+def home_completed(request):
+    current_list_list = List.objects.order_by('id', 'list_name')
+    full_list = {}
+    for list in current_list_list:
+        full_list[list] = []
+        current_task_list = Task.objects.filter(list_id=list.id).filter(completed=True).order_by(
+            '-list_id') \
+            .order_by('-due_date')
+        for task in current_task_list:
+            full_list[list].append(task)
+    output = {'full_list': full_list}
+    return render(request, 'my_todos/home.html', output)
+
+
+def home_all(request):
     current_list_list = List.objects.order_by('id', 'list_name')
     full_list = {}
     for list in current_list_list:
@@ -16,7 +47,23 @@ def index(request):
         for task in current_task_list:
             full_list[list].append(task)
     output = {'full_list': full_list}
-    return render(request, 'my_todos/index.html', output)
+    return render(request, 'my_todos/home.html', output)
+
+
+def home_overdue(request):
+    current_list_list = List.objects.order_by('id', 'list_name')
+    full_list = {}
+    for list in current_list_list:
+        full_list[list] = []
+        current_task_list = Task.objects.filter(list_id=list.id).\
+            filter(completed=False).\
+            filter(due_date__lt=datetime.date.today()).\
+            order_by('-list_id').\
+            order_by('-due_date')
+        for task in current_task_list:
+            full_list[list].append(task)
+    output = {'full_list': full_list}
+    return render(request, 'my_todos/home.html', output)
 
 
 class TaskDetail(generic.DetailView):
@@ -54,7 +101,7 @@ class ListUpdate(generic.UpdateView):
 
 class ListDelete(generic.DeleteView):
     model = List
-    success_url = reverse_lazy('todos:index')
+    success_url = reverse_lazy('todos:home')
 
 
 class TaskCreate(generic.CreateView):
@@ -69,5 +116,5 @@ class TaskUpdate(generic.UpdateView):
 
 class TaskDelete(generic.DeleteView):
     model = Task
-    success_url = reverse_lazy('todos:index')
+    success_url = reverse_lazy('todos:home')
 

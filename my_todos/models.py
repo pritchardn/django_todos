@@ -21,7 +21,7 @@ class Task(models.Model):
     task_name = models.CharField(max_length=200)
     pub_date = models.DateField('date created', default=datetime.date.today)
     due_date = models.DateField('date due', blank=True, null=True)
-    description = models.TextField(max_length=1000)
+    description = models.TextField(max_length=1000, blank=True, null=True)
     completed = models.BooleanField(default=False)
     recurring = models.BooleanField(default=False)
     persistent = models.BooleanField(default=False)
