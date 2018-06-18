@@ -1,4 +1,7 @@
 <h1>{{ list }}</h1>
+<form action="/todos/task/new/">
+    <button type="submit">New Task</button>
+</form>
 <form action="update/">
     <button type="submit">Edit</button>
 </form>
@@ -11,7 +14,7 @@
 {% block content %}
     <ul>
         {% for task in object_list %}
-            <li>{{ task.task_name }}</li>
+            <li><a href="/todos/task/{{ task.pk }}">{{ task.task_name }}</a></li>
         {% endfor %}
     </ul>
 {% endblock %}

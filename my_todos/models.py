@@ -20,7 +20,7 @@ class Task(models.Model):
     list_id = models.ForeignKey(List, on_delete=models.CASCADE)
     task_name = models.CharField(max_length=200)
     pub_date = models.DateField('date created', default=datetime.date.today)
-    due_date = models.DateField('date due', blank=True, null=True)
+    due_date = models.DateField('date due', null=True, blank=True)
     description = models.TextField(max_length=1000, blank=True, null=True)
     completed = models.BooleanField(default=False)
     recurring = models.BooleanField(default=False)
@@ -31,12 +31,6 @@ class Task(models.Model):
 
     def get_absolute_url(self):
         return reverse('todos:task_detail', kwargs={'pk': self.pk})
-
-    def overdue(self):
-        if self.due_date and datetime.date.today() > self.due_date:
-            return True
-        else:
-            return False
 
 
 class Dependancy(models.Model):

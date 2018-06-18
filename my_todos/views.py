@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from .models import *
 from django.views import generic
@@ -13,7 +13,7 @@ def home(request):
         full_list[list] = []
         current_task_list = Task.objects.filter(list_id=list.id).\
             filter(completed=False).\
-            filter(Q(due_date__gte=datetime.date.today()) | Q(due_date=None)).\
+            filter(Q(due_date__gte=datetime.date.today()) | (Q(due_date=None) and Q(persistent=True))).\
             order_by('-list_id').\
             order_by('-due_date')
         for task in current_task_list:
@@ -66,6 +66,12 @@ def home_overdue(request):
     return render(request, 'my_todos/home.html', output)
 
 
+def task_complete(request, task_id: int):
+    task = get_object_or_404(Task, pk=task_id)
+    task.completed = not task.completed
+    task.save()
+    return redirect(reverse('todos:home'))
+
 class TaskDetail(generic.DetailView):
     model = Task
 
@@ -111,10 +117,19 @@ class TaskCreate(generic.CreateView):
 
 class TaskUpdate(generic.UpdateView):
     model = Task
-    fields = ['task_name', 'pub_date', 'due_date', 'description', 'recurring', 'persistent']
+    fields = ['task_name', 'pub_date', 'due_date', 'description', 'recurring', 'persistent', 'completed']
 
 
 class TaskDelete(generic.DeleteView):
     model = Task
     success_url = reverse_lazy('todos:home')
 
+
+class TaskComplete(generic.DetailView):
+    model = Task
+
+    def get_object(self):
+        task = super(TaskComplete, self).get_object()
+        task.completed = True
+        task.save()
+        return task
