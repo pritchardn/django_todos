@@ -1,25 +1,32 @@
-{% if full_list %}
-    <ul>
-    {% for key, value_list in full_list.items %}
-        <h2><a href="/todos/list/{{ key.id }}">{{ key }}</a></h2>
-        {% for task in value_list %}
-            <li>
-                <a href="/todos/task/{{ task.id }}/">{{ task.task_name }}<form action="/todos/task/{{ task.id }}/complete/"><button type="submit">Complete</button></form></a>
-            </li>
+{% block content %}
+    {% if user.is_authenticated %}
+        {% if full_list %}
+            <ul>
+        {% for key, value_list in full_list.items %}
+            <h2><a href="/todos/list/{{ key.id }}">{{ key }}</a></h2>
+            {% for task in value_list %}
+                <li>
+                    <a href="/todos/task/{{ task.id }}/">{{ task.task_name }}<form action="/todos/task/{{ task.id }}/complete/"><button type="submit">Complete</button></form></a>
+                </li>
+            {% endfor %}
         {% endfor %}
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No tasks are available.</p>
-{% endif %}
-<form action="/todos/list/new/">
-    <button type="submit">New List</button>
-</form>
-<form action="/todos/task/new/">
-    <button type="submit">New Task</button>
-</form>
-<a href="/todos/home">Current Tasks</a><br>
-<a href="/todos/home/overdue">Overdue Tasks</a><br>
-<a href="/todos/home/completed">Completed Tasks</a><br>
-<a href="/todos/home/all">All Tasks</a>
-
+        </ul>
+    {% else %}
+        <p>No tasks are available.</p>
+    {% endif %}
+    <form action="/todos/list/new/">
+        <button type="submit">New List</button>
+    </form>
+    <form action="/todos/task/new/">
+        <button type="submit">New Task</button>
+    </form>
+    <a href="/todos/home">Current Tasks</a><br>
+    <a href="/todos/home/overdue">Overdue Tasks</a><br>
+    <a href="/todos/home/completed">Completed Tasks</a><br>
+    <a href="/todos/home/all">All Tasks</a><br>
+    <a href="{% url 'todos:logout' %}">Logout</a>
+    {% else %}
+        <p>You are not logged in</p>
+        <a href="{% url 'todos:login' %}">Login</a>
+    {% endif %}
+{% endblock %}

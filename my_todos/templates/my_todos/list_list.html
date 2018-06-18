@@ -1,3 +1,4 @@
+{% if user.is_authenticated %}
 {% block content %}
     <h2>Lists</h2>
     <ul>
@@ -6,3 +7,7 @@
         {% endfor %}
     </ul>
 {% endblock %}
+{% else %}
+    <p>You are not logged in</p>
+    <a href="{% url 'todos:login' %}">Login</a>
+{% endif %}

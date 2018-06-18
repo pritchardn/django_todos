@@ -1,3 +1,4 @@
+{% if user.is_authenticated %}
 <h1>{{ task }}</h1>
 <form action="complete/">
     <button type="submit">Complete</button>
@@ -25,3 +26,7 @@
 <p>{{ task.recurring }}</p>
 <h5>Persistent?</h5>
 <p>{{ task.persistent }}</p>
+{% else %}
+    <p>You are not logged in</p>
+    <a href="{% url 'todos:login' %}">Login</a>
+{% endif %}

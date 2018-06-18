@@ -4,6 +4,7 @@ from .models import *
 from django.views import generic
 from django.urls import reverse_lazy
 from django.db.models import Q
+from copy import deepcopy
 
 
 def home(request):
@@ -68,8 +69,14 @@ def home_overdue(request):
 
 def task_complete(request, task_id: int):
     task = get_object_or_404(Task, pk=task_id)
-    task.completed = not task.completed
+    task.completed = True
     task.save()
+    if task.recurring:
+        task2 = deepcopy(task)
+        task2.id = None
+        task2.due_date = None
+        task2.completed = False
+        task2.save()
     return redirect(reverse('todos:home'))
 
 class TaskDetail(generic.DetailView):

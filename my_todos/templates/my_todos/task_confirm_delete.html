@@ -1,3 +1,4 @@
+{% if user.is_authenticated %}
 {% block content %}
     <h1>Delete Task?</h1>
     <form method="POST" class="post-form">{% csrf_token %}
@@ -5,3 +6,7 @@
         <button type="submit" value="DELETE">DELET THIS</button>
     </form>
 {% endblock %}
+{% else %}
+    <p>You are not logged in</p>
+    <a href="{% url 'todos:login' %}">Login</a>
+{% endif %}

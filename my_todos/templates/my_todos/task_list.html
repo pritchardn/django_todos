@@ -1,3 +1,4 @@
+{% if user.is_authenticated %}
 <h1>{{ list }}</h1>
 <form action="/todos/task/new/">
     <button type="submit">New Task</button>
@@ -18,3 +19,7 @@
         {% endfor %}
     </ul>
 {% endblock %}
+{% else %}
+    <p>You are not logged in</p>
+    <a href="{% url 'todos:login' %}">Login</a>
+{% endif %}

@@ -1,7 +1,8 @@
 from django.urls import path
 from . import views
 from my_todos.views import *
-from django.conf.urls import url
+from django.urls import include
+
 
 app_name = 'todos'
 
@@ -21,6 +22,7 @@ urlpatterns = [
     path('task/new/', TaskCreate.as_view(), name='task_new'),
     path('task/<int:pk>/update/', TaskUpdate.as_view(), name='task_update'),
     path('task/<int:pk>/delete/', TaskDelete.as_view(), name='task_delete'),
-    path('task/<int:task_id>/complete/', views.task_complete, name='task_complete')
+    path('task/<int:task_id>/complete/', views.task_complete, name='task_complete'),
     # Management
+    path('accounts/', include('django.contrib.auth.urls')),
 ]
