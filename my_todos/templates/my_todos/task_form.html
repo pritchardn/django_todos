@@ -5,7 +5,7 @@
         {{ form.as_p }}
         <button type="submit">Save</button>
     </form>
-    <form action="/todos/home">
+    <form action="{% url 'todos:home' %}">
         <button type="submit">Cancel</button>
     </form>
 {% endblock %}

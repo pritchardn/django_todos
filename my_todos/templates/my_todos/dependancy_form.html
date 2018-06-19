@@ -1,6 +1,6 @@
 {% if user.is_authenticated %}
 {% block content %}
-    <h1>New List</h1>
+    <h1>New Dependancy</h1>
     <form method="POST" class="post-form">{% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Save</button>

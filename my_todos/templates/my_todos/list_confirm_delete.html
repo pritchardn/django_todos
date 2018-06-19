@@ -5,6 +5,9 @@
         {{ form.as_p }}
         <button type="submit" value="DELETE">DELET THIS</button>
     </form>
+        <form action="{% url 'todos:home' %}">
+        <button type="submit">Cancel</button>
+    </form>
 {% endblock %}
 {% else %}
     <p>You are not logged in</p>

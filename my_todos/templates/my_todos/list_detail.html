@@ -6,7 +6,7 @@
 <form action="delete/">
     <button type="submit">Delete</button>
 </form>
-<form action="/todos/home">
+<form action="{% url 'todos:home' %}">
     <button type="submit">Go Home</button>
 </form>
 {% else %}

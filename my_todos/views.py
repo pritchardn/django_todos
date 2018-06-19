@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse
 from .models import *
 from django.views import generic
 from django.urls import reverse_lazy
@@ -14,7 +13,8 @@ def home(request):
         full_list[list] = []
         current_task_list = Task.objects.filter(list_id=list.id).\
             filter(completed=False).\
-            filter(Q(due_date__gte=datetime.date.today()) | (Q(due_date=None) and Q(persistent=True))).\
+            filter(Q(due_date=datetime.date.today()) | (Q(due_date=None) and Q(persistent=True))).\
+            filter(Q(parent_task__isnull=True) | Q(parent_task__enforce=False)).\
             order_by('-list_id').\
             order_by('-due_date')
         for task in current_task_list:
@@ -77,7 +77,11 @@ def task_complete(request, task_id: int):
         task2.due_date = None
         task2.completed = False
         task2.save()
+    for depend in Dependancy.objects.filter(child_id=task.id):
+        depend.enforce = False
+        depend.save()
     return redirect(reverse('todos:home'))
+
 
 class TaskDetail(generic.DetailView):
     model = Task
@@ -96,8 +100,17 @@ class ListSummary(generic.ListView):
         context['list'] = List.objects.get(pk=self.kwargs['pk'])
         return context
 
+
 class ListLists(generic.ListView):
     model = List
+
+
+class DependancyDetail(generic.DetailView):
+    model = Dependancy
+
+
+class DependancyList(generic.ListView):
+    model = Dependancy
 
 # Forms --------------------------------------
 
@@ -132,11 +145,16 @@ class TaskDelete(generic.DeleteView):
     success_url = reverse_lazy('todos:home')
 
 
-class TaskComplete(generic.DetailView):
-    model = Task
+class DependancyCreate(generic.CreateView):
+    model = Dependancy
+    fields = ['parent_id', 'child_id']
 
-    def get_object(self):
-        task = super(TaskComplete, self).get_object()
-        task.completed = True
-        task.save()
-        return task
+
+class DependancyUpdate(generic.UpdateView):
+    model = Dependancy
+    fields = ['parent_id', 'child_id', 'enforce']
+
+
+class DependancyDelete(generic.DeleteView):
+    model = Dependancy
+    success_url = reverse_lazy('todos:home')

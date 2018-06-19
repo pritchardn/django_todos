@@ -1,8 +1,5 @@
 {% if user.is_authenticated %}
-<h1>{{ list }}</h1>
-<form action="{% url 'todos:task_new' %}">
-    <button type="submit">New Task</button>
-</form>
+<h1>{{ dependancy }}</h1>
 <form action="update/">
     <button type="submit">Edit</button>
 </form>
@@ -12,13 +9,10 @@
 <form action="{% url 'todos:home' %}">
     <button type="submit">Go Home</button>
 </form>
-{% block content %}
-    <ul>
-        {% for task in object_list %}
-            <li><a href="/todos/task/{{ task.pk }}">{{ task.task_name }}</a></li>
-        {% endfor %}
-    </ul>
-{% endblock %}
+<h5>Parent</h5>
+<p>{{ dependancy.parent_id }}</p>
+<h5>Child</h5>
+<p>{{ dependancy.child_id }}</p>
 {% else %}
     <p>You are not logged in</p>
     <a href="{% url 'todos:login' %}">Login</a>

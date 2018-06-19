@@ -1,0 +1,19 @@
+{% if user.is_authenticated %}
+{% block content %}
+    <h2>Dependancies</h2>
+    <ul>
+        {% for dep in object_list %}
+            <li><a href="/todos/dep/{{ dep.pk }}/">{{ dep.parent_id }} -> {{ dep.child_id }}</a></li>
+        {% endfor %}
+    </ul>
+    <form action="{% url 'todos:dependancy_new' %}">
+        <button type="submit">New Dependancy</button>
+    </form>
+    <form action="{% url 'todos:home' %}">
+        <button type="submit">Go Home</button>
+    </form>
+{% endblock %}
+{% else %}
+    <p>You are not logged in</p>
+    <a href="{% url 'todos:login' %}">Login</a>
+{% endif %}

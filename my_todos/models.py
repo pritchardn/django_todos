@@ -36,6 +36,10 @@ class Task(models.Model):
 class Dependancy(models.Model):
     parent_id = models.ForeignKey(Task, related_name='parent_task', on_delete=models.CASCADE)
     child_id = models.ForeignKey(Task, related_name='child_task', on_delete=models.CASCADE)
+    enforce = models.BooleanField(default=True)
 
     def __str__(self):
         return "Parent: " + self.parent_id.task_name + " Child: " + self.child_id.task_name
+
+    def get_absolute_url(self):
+        return reverse('todos:dependancy_detail', kwargs={'pk': self.pk})
