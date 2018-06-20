@@ -6,6 +6,9 @@
 <form action="delete/">
     <button type="submit">Delete</button>
 </form>
+<form action="{% url 'todos:dependancy_new' %}">
+    <button type="submit">New Dependancy</button>
+</form>
 <form action="{% url 'todos:home' %}">
     <button type="submit">Go Home</button>
 </form>

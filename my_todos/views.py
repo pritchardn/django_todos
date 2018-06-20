@@ -137,7 +137,7 @@ class TaskCreate(generic.CreateView):
 
 class TaskUpdate(generic.UpdateView):
     model = Task
-    fields = ['task_name', 'pub_date', 'due_date', 'description', 'recurring', 'persistent', 'completed']
+    fields = ['task_name', 'pub_date', 'due_date', 'description', 'list_id', 'recurring', 'persistent', 'completed']
 
 
 class TaskDelete(generic.DeleteView):
