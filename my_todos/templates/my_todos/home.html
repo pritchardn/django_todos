@@ -1,5 +1,17 @@
 {% block content %}
     {% if user.is_authenticated %}
+        <form action="{% url 'todos:list_new' %}">
+            <button type="submit">New List</button>
+        </form>
+        <form action="{% url 'todos:task_new' %}">
+            <button type="submit">New Task</button>
+        </form>
+        <form action="{% url 'todos:dependancy_new' %}">
+            <button type="submit">New Dependancy</button>
+        </form>
+        <form action="{% url 'todos:dependancy_list' %}">
+            <button type="submit">List Dependancies</button>
+        </form>
         {% if full_list %}
             <ul>
         {% for key, value_list in full_list.items %}
@@ -14,18 +26,6 @@
     {% else %}
         <p>No tasks are available.</p>
     {% endif %}
-    <form action="{% url 'todos:list_new' %}">
-        <button type="submit">New List</button>
-    </form>
-    <form action="{% url 'todos:task_new' %}">
-        <button type="submit">New Task</button>
-    </form>
-    <form action="{% url 'todos:dependancy_new' %}">
-        <button type="submit">New Dependancy</button>
-    </form>
-    <form action="{% url 'todos:dependancy_list' %}">
-        <button type="submit">List Dependancies</button>
-    </form>
     <a href="{% url 'todos:home' %}">Current Tasks</a><br>
     <a href="{% url 'todos:home_overdue' %}">Overdue Tasks</a><br>
     <a href="{% url 'todos:home_completed' %}">Completed Tasks</a><br>
