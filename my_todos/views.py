@@ -23,6 +23,23 @@ def home(request):
     return render(request, 'my_todos/home.html', output)
 
 
+def home_tomorrow(request):
+    current_list_list = List.objects.order_by('id', 'list_name')
+    full_list = {}
+    for list in current_list_list:
+        full_list[list] = []
+        current_task_list = Task.objects.filter(list_id=list.id). \
+            filter(completed=False). \
+            filter(Q(due_date=datetime.date.today()+datetime.timedelta(days=1)) | (Q(due_date=None) and Q(persistent=True))). \
+            filter(Q(parent_task__isnull=True) | Q(parent_task__enforce=False)). \
+            order_by('-list_id'). \
+            order_by('-due_date')
+        for task in current_task_list:
+            full_list[list].append(task)
+    output = {'full_list': full_list}
+    return render(request, 'my_todos/home.html', output)
+
+
 def home_completed(request):
     current_list_list = List.objects.order_by('id', 'list_name')
     full_list = {}
@@ -74,7 +91,7 @@ def task_complete(request, task_id: int):
     if task.recurring:
         task2 = deepcopy(task)
         task2.id = None
-        task2.due_date = None
+        task2.due_date = datetime.date.today() + datetime.timedelta(days=1)
         task2.completed = False
         task2.save()
     for depend in Dependancy.objects.filter(child_id=task.id):

@@ -9,6 +9,7 @@ app_name = 'todos'
 urlpatterns = [
     # Overviews
     path('home/', views.home, name='home'),
+    path('home/tomorrow', views.home_tomorrow, name='home_tomorrow'),
     path('home/completed', views.home_completed, name='home_completed'),
     path('home/all', views.home_all, name='home_all'),
     path('home/overdue', views.home_overdue, name='home_overdue'),
