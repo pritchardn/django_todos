@@ -27,7 +27,7 @@
         <p>No tasks are available.</p>
     {% endif %}
     <a href="{% url 'todos:home' %}">Current Tasks</a><br>
-    <a href="{% url 'todos:home_tomorrow' %}">Tomorrow's Tasks</a>
+    <a href="{% url 'todos:home_tomorrow' %}">Tomorrow's Tasks</a><br>
     <a href="{% url 'todos:home_overdue' %}">Overdue Tasks</a><br>
     <a href="{% url 'todos:home_completed' %}">Completed Tasks</a><br>
     <a href="{% url 'todos:home_all' %}">All Tasks</a><br>
