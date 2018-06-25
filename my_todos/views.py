@@ -13,7 +13,7 @@ def home(request):
         full_list[list] = []
         current_task_list = Task.objects.filter(list_id=list.id).\
             filter(completed=False).\
-            filter(Q(due_date=datetime.date.today()) | (Q(due_date=None) and Q(persistent=True))).\
+            filter(Q(due_date__lte=datetime.date.today()) | (Q(due_date=None) and Q(persistent=True))).\
             filter(Q(parent_task__isnull=True) | Q(parent_task__enforce=False)).\
             order_by('-list_id').\
             order_by('-due_date')
@@ -149,12 +149,12 @@ class ListDelete(generic.DeleteView):
 
 class TaskCreate(generic.CreateView):
     model = Task
-    fields = ['task_name', 'pub_date', 'due_date', 'description', 'list_id', 'recurring', 'persistent']
+    fields = ['task_name', 'due_date', 'description', 'list_id', 'recurring', 'persistent']
 
 
 class TaskUpdate(generic.UpdateView):
     model = Task
-    fields = ['task_name', 'pub_date', 'due_date', 'description', 'list_id', 'recurring', 'persistent', 'completed']
+    fields = ['task_name', 'due_date', 'description', 'list_id', 'recurring', 'persistent', 'completed']
 
 
 class TaskDelete(generic.DeleteView):
